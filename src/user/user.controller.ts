@@ -14,7 +14,7 @@ export class userController {
     ) {
       const generatedId = await this.userService.addUser(userName, userEmail, userPhone);
 
-      const status = generatedId!= "Error"? "OK": "Error"
+      const status = generatedId!= ""? "OK": "Error"
 
       return {status: status, id: generatedId};
   }

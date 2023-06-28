@@ -12,15 +12,3 @@ export interface Config {
   universe_domain: string
 }
 
-
-/*
-export interface Config {
-  FIREBASE_APIKEY: string;
-  FIREBASE_AUTHDOMAIN: string;
-  FIREBASE_PROJECTID: string;
-  FIREBASE_STORAGE: string;
-  FIREBASE_MESSAGING: string;
-  FIREBASE_APPID: string;
-  FIREBASE_MEASUREMENT: string;
-}
-*/

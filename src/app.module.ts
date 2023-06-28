@@ -1,10 +1,16 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
-import { FirebaseService } from './firebase/firebase.service';
+import { AccessMiddleware } from "./middleware/access.middleware";
 
 @Module({
   imports: [ConfigModule.forRoot(), UserModule],
   //providers: [FirebaseService]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AccessMiddleware)
+      .forRoutes('*');
+  }
+}

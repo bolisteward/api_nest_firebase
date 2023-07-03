@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { initializeApp, cert, ServiceAccount, App } from 'firebase-admin/app';
-import { getFirestore, Firestore, CollectionReference } from 'firebase-admin/firestore';
+import { getFirestore, Firestore, FieldValue, CollectionReference } from 'firebase-admin/firestore';
 import { Config } from './firebase.model';
 
 @Injectable()
@@ -28,12 +28,15 @@ export class FirebaseService {
 
     this.database = getFirestore(this.app);
 
-
     this._createCollections();
   }
 
   private _createCollections() {
     this.usersCollection = this.database.collection('users');
+  }
+
+  public TimeFrame() {
+    return FieldValue.serverTimestamp();
   }
 }
 

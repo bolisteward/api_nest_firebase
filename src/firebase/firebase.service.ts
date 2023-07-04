@@ -39,7 +39,3 @@ export class FirebaseService {
     return FieldValue.serverTimestamp();
   }
 }
-
-function InjectConfig(): (target: typeof FirebaseService) => void | typeof FirebaseService {
-  throw new Error('Function not implemented.');
-}

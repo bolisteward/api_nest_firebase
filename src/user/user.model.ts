@@ -1,4 +1,4 @@
-export interface DataSelected{
+export interface DataSelected {
   hogar: string,
   estilo: string,
   paisaje: string,
@@ -9,30 +9,49 @@ export class User {
     private name: string,
     private email: string,
     private phoneNumber: string,
-    private data: DataSelected, 
-    private id?: string
-    ){}
+    private data: DataSelected,
+    private id?: string,
+    private date?: string,
+  ) { }
 
-  getUser(){
+  getUser() {
     return {
+      timestamp: this.date,
       name: this.name,
       email: this.email,
       phoneNumber: this.phoneNumber,
-      data: this.data     
+      data: this.data
     }
   }
 
-  getUserdata(){
+  getUserdata() {
     return {
-      data: this.data     
+      data: this.data
     }
   }
 
-  setUserId(id: string){
+  setUserId(id: string) {
     this.id = id;
   }
 
-  getUserId(){
+  getUserId() {
     return this.id;
+  }
+
+  setUserDate(date: string) {
+    this.date = date;
+  }
+
+  getSheetUserData() {
+    return {
+      Id: this.id,
+      Fecha: this.date,
+      Nombre: this.name,
+      Correo: this.email,
+      Telefono: this.phoneNumber,
+      Estilo: this.data.estilo,
+      Hogar: this.data.hogar,
+      Paisaje: this.data.paisaje
+    }
   }
 }

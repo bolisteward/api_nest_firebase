@@ -27,7 +27,7 @@ export class User {
   getUserdata() {
     return {
       data: this.data
-    }
+    }    
   }
 
   setUserId(id: string) {

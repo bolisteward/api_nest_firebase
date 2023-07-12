@@ -14,11 +14,11 @@ export class userController {
     @Body('phone') userPhone: string,
     @Body('data') userData: DataSelected
     ) {
-      const generatedId = await this.userService.addUser(userName, userEmail, userPhone, userData);
+      const {id, emailStatus }= await this.userService.addUser(userName, userEmail, userPhone, userData);
 
-      const status = generatedId!= ""? "OK": "Error"
+      const status = id!= ""? "OK": "Error";
 
-      return {status: status, id: generatedId};
+      return {status: status, id: emailStatus};
   }
 
 

@@ -7,14 +7,22 @@ import axios from "axios";
 @Injectable()
 export class UserService {
 
-  constructor(private firebaseService: FirebaseService, private googleService: GoogleService, private configService: ConfigService<{EMAIL_API: string}>) { }
+  constructor(private firebaseService: FirebaseService,
+    private googleService: GoogleService,
+    private configService: ConfigService<{ EMAIL_API: string }>) { }
 
   private users: User[] = [];
 
-  public async addUser(name: string, email: string, phone: string, data: DataSelected): Promise<string> {
+  public async addUser(
+    name: string, 
+    email: string, 
+    phone: string, 
+    data: DataSelected
+    ): Promise<{id: string, emailStatus: String}> {
+
     try {
       let newUser = new User(name, email, phone, data);
-      
+
       //add user to firestore
       const result = await this.firebaseService.database.collection('users').add({
         ...newUser.getUser(),
@@ -41,12 +49,11 @@ export class UserService {
         throw new Error("Event Tracked.");
       }
 
-
-      return result.id;
+      return result.id, emailresponse.data.result;
 
     } catch (error) {
       console.error('Error', error);
-      return '';
+      return {id:'', emailStatus: "Not sent"};
     }
   }
 

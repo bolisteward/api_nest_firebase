@@ -16,9 +16,9 @@ export class userController {
     ) {
       const {id, emailStatus }= await this.userService.addUser(userName, userEmail, userPhone, userData);
 
-      const status = id!= ""? "OK": "Error";
-
-      return {status: status, id: emailStatus};
+      const status = id!= ""? "OK": "Error"
+      
+      return {status: status, id: id, emailStatus: emailStatus};
   }
 
 

@@ -44,12 +44,12 @@ export class UserService {
       };
 
       const emailresponse = await axios.post(this.configService.get<string>('EMAIL_API'), emailData, { headers: headersEmail });
-
-      if (emailresponse.data.result === "Event Tracked.") {
+      
+      if (emailresponse.status != 200) {
         throw new Error("Event Tracked.");
       }
 
-      return result.id, emailresponse.data.result;
+      return {id: result.id, emailStatus: emailresponse.status === 200? "Success": "Not sent"};
 
     } catch (error) {
       console.error('Error', error);

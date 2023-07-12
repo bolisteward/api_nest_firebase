@@ -2,18 +2,19 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { User, DataSelected } from './user.model';
 import { FirebaseService } from "src/firebase/firebase.service";
 import { GoogleService } from "src/googleSheet/google.service";
-
+import { ConfigService } from '@nestjs/config';
+import axios from "axios";
 @Injectable()
 export class UserService {
 
-  constructor(private firebaseService: FirebaseService, private googleService: GoogleService) { }
+  constructor(private firebaseService: FirebaseService, private googleService: GoogleService, private configService: ConfigService<{EMAIL_API: string}>) { }
 
   private users: User[] = [];
 
   public async addUser(name: string, email: string, phone: string, data: DataSelected): Promise<string> {
     try {
       let newUser = new User(name, email, phone, data);
-
+      
       //add user to firestore
       const result = await this.firebaseService.database.collection('users').add({
         ...newUser.getUser(),
@@ -26,6 +27,20 @@ export class UserService {
 
       this.googleService.addData(newUser.getSheetUserData());
       this.users.push(newUser);
+
+      const emailData = newUser.getMailData();
+
+      const headersEmail = {
+        // Encabezados de la solicitud
+        "Content-Type": "application/json",
+      };
+
+      const emailresponse = await axios.post(this.configService.get<string>('EMAIL_API'), emailData, { headers: headersEmail });
+
+      if (emailresponse.data.result === "Event Tracked.") {
+        throw new Error("Event Tracked.");
+      }
+
 
       return result.id;
 
@@ -46,6 +61,10 @@ export class UserService {
       throw new NotFoundException("Could not find user.");
     }
     return { ...user };
+  }
+
+  private sendEmail(user: User) {
+    const data = user.getMailData()
   }
 
 
